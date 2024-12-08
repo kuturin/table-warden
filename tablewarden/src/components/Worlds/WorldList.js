@@ -1,15 +1,15 @@
 import React from 'react';
 
-const CampaignList = ({ campaigns, onDelete }) => {
+const WorldList = ({ worlds, onDelete }) => {
   return (
     <div>
-      <h2>Campaigns</h2>
+      <h3>Worlds</h3>
       <ul>
-        {campaigns.map((campaign, index) => (
+        {worlds.map((world, index) => (
           <li key={index}>
-            {campaign}
+            {world}
             <button onClick={() => {
-              console.log('Usuwanie kampanii:', index);
+              console.log('Usuwanie świata:', index);
               onDelete(index);
             }}>Delete</button>
           </li>
@@ -19,4 +19,4 @@ const CampaignList = ({ campaigns, onDelete }) => {
   );
 };
 
-export default CampaignList;
+export default WorldList;
