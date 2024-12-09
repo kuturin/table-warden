@@ -3,15 +3,11 @@ import React from 'react';
 const CharacterList = ({ characters, onDelete }) => {
   return (
     <div>
-      <h3>Characters</h3>
       <ul>
         {characters.map((character, index) => (
-          <li key={index}>
+          <li key={index} className="item">
             {character}
-            <button onClick={() => {
-              console.log('Usuwanie postaci:', index);
-              onDelete(index);
-            }}>Delete</button>
+            <button className="delete-button" onClick={() => onDelete(index)}>X</button>
           </li>
         ))}
       </ul>

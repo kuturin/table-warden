@@ -1,121 +1,135 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import CharacterForm from './components/Characters/CharacterForm';
-import CharacterList from './components/Characters/CharacterList';
 import CampaignForm from './components/Campaigns/CampaignForm';
+import CharacterList from './components/Characters/CharacterList';
 import CampaignList from './components/Campaigns/CampaignList';
 
 const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescriptions }) => {
   const { worldName } = useParams();
-  const navigate = useNavigate();
   const [newWorldName, setNewWorldName] = useState(worldName);
-  const [description, setDescription] = useState('');
-  const [descriptions, setDescriptions] = useState(() => {
-    const storedDescriptions = worldDescriptions[worldName];
-    return Array.isArray(storedDescriptions) ? storedDescriptions : [];
+  const [description, setDescription] = useState(worldDescriptions[worldName] || "");
+  const [showTextarea, setShowTextarea] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  const [showCharacterForm, setShowCharacterForm] = useState(false);
+  const [characters, setCharacters] = useState(() => {
+    const storedCharacters = JSON.parse(localStorage.getItem(`${worldName}-characters`)) || [];
+    return storedCharacters;
   });
-  const [characters, setCharacters] = useState(() => JSON.parse(localStorage.getItem(`characters-${worldName}`)) || []);
-  const [campaigns, setCampaigns] = useState(() => JSON.parse(localStorage.getItem(`campaigns-${worldName}`)) || []);
-  const [isEditingName, setIsEditingName] = useState(false);
+  const [campaigns, setCampaigns] = useState(() => {
+    const storedCampaigns = JSON.parse(localStorage.getItem(`${worldName}-campaigns`)) || [];
+    return storedCampaigns;
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.setItem(`characters-${newWorldName}`, JSON.stringify(characters));
-    localStorage.setItem(`campaigns-${newWorldName}`, JSON.stringify(campaigns));
-    if (newWorldName !== worldName) {
-      localStorage.removeItem(`characters-${worldName}`);
-      localStorage.removeItem(`campaigns-${worldName}`);
+    setNewWorldName(worldName);
+    setDescription(worldDescriptions[worldName] || "");
+  }, [worldName, worldDescriptions]);
+
+  const handleSaveName = () => {
+    if (newWorldName.trim() !== "" && newWorldName !== worldName) {
+      const updatedWorlds = worlds.map(world => world === worldName ? newWorldName : world);
+      setWorlds(updatedWorlds);
+
+      const updatedDescriptions = {
+        ...worldDescriptions,
+        [newWorldName]: worldDescriptions[worldName]
+      };
+      delete updatedDescriptions[worldName];
+      setWorldDescriptions(updatedDescriptions);
+
+      localStorage.setItem('worlds', JSON.stringify(updatedWorlds));
+      localStorage.setItem('worldDescriptions', JSON.stringify(updatedDescriptions));
+
+      navigate(`/world/${newWorldName}`);
     }
-  }, [characters, campaigns, newWorldName]);
+    setShowInput(false); // Ukryj pole tekstowe i przycisk po zapisaniu nazwy
+  };
 
-  useEffect(() => {
-    setWorldDescriptions((prevDescriptions) => ({
-      ...prevDescriptions,
-      [newWorldName]: descriptions
-    }));
-    localStorage.setItem('worldDescriptions', JSON.stringify({
+  const handleSaveDescription = () => {
+    const updatedDescriptions = {
       ...worldDescriptions,
-      [newWorldName]: descriptions
-    }));
-  }, [descriptions, newWorldName, setWorldDescriptions]);
-
-  const handleAddCharacter = (characterName) => {
-    setCharacters([...characters, characterName]);
-  };
-
-  const handleSaveCampaign = (campaignName) => {
-    setCampaigns([...campaigns, campaignName]);
-  };
-
-  const handleAddDescription = () => {
-    if (description.trim()) {
-      setDescriptions([...descriptions, description]);
-      setDescription('');
-    }
-  };
-
-  const handleDeleteDescription = (index) => {
-    const updatedDescriptions = descriptions.filter((_, i) => i !== index);
-    setDescriptions(updatedDescriptions);
-  };
-
-  const handleChangeWorldName = () => {
-    const updatedWorlds = worlds.map((world) => (world === worldName ? newWorldName : world));
-    setWorlds(updatedWorlds);
-    setIsEditingName(false); // Zakończ tryb edycji po zapisaniu
-    navigate(`/world/${newWorldName}`, { replace: true });
-  };
-
-  const handleNameClick = () => {
-    setIsEditingName(true);
+      [worldName]: description
+    };
+    setWorldDescriptions(updatedDescriptions);
+    localStorage.setItem('worldDescriptions', JSON.stringify(updatedDescriptions));
+    setShowTextarea(false); // Ukryj pole tekstowe i przycisk po zapisaniu opisu
   };
 
   const handleDeleteWorld = () => {
     const updatedWorlds = worlds.filter(world => world !== worldName);
     setWorlds(updatedWorlds);
+
+    const updatedDescriptions = { ...worldDescriptions };
+    delete updatedDescriptions[worldName];
+    setWorldDescriptions(updatedDescriptions);
+
     localStorage.setItem('worlds', JSON.stringify(updatedWorlds));
-    localStorage.removeItem(`characters-${worldName}`);
-    localStorage.removeItem(`campaigns-${worldName}`);
-    localStorage.removeItem(`worldDescriptions`);
-    navigate('/', { replace: true });
+    localStorage.setItem('worldDescriptions', JSON.stringify(updatedDescriptions));
+
+    navigate('/');
+  };
+
+  const handleAddCharacter = (characterName) => {
+    const updatedCharacters = [...characters, characterName];
+    setCharacters(updatedCharacters);
+    localStorage.setItem(`${worldName}-characters`, JSON.stringify(updatedCharacters));
+  };
+
+  const handleDeleteCharacter = (index) => {
+    const updatedCharacters = characters.filter((_, i) => i !== index);
+    setCharacters(updatedCharacters);
+    localStorage.setItem(`${worldName}-characters`, JSON.stringify(updatedCharacters));
+  };
+
+  const handleAddCampaign = (campaignName) => {
+    const updatedCampaigns = [...campaigns, campaignName];
+    setCampaigns(updatedCampaigns);
+    localStorage.setItem(`${worldName}-campaigns`, JSON.stringify(updatedCampaigns));
+  };
+
+  const handleDeleteCampaign = (index) => {
+    const updatedCampaigns = campaigns.filter((_, i) => i !== index);
+    setCampaigns(updatedCampaigns);
+    localStorage.setItem(`${worldName}-campaigns`, JSON.stringify(updatedCampaigns));
   };
 
   return (
     <div>
-      <h2 onClick={handleNameClick} style={{ cursor: 'pointer' }}>{worldName}</h2>
-      {isEditingName && (
-        <div>
-          <input 
-            type="text" 
-            value={newWorldName} 
-            onChange={(e) => setNewWorldName(e.target.value)} 
-            placeholder="Change World Name" 
+      {showInput ? (
+        <>
+          <input
+            type="text"
+            value={newWorldName}
+            onChange={(e) => setNewWorldName(e.target.value)}
+            placeholder="New world name"
           />
-          <button onClick={handleChangeWorldName}>Save</button>
-        </div>
+          <button onClick={handleSaveName}>Save Name</button>
+        </>
+      ) : (
+        <h3 onClick={() => setShowInput(true)}>{worldName}</h3>
       )}
-      <input
-        type="text"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Add Description"
-      />
-      <button onClick={handleAddDescription}>Add</button>
-      <ul>
-        {descriptions.map((desc, index) => (
-          <li key={index}>
-            {desc}
-            <button onClick={() => handleDeleteDescription(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <CharacterForm onAddCharacter={handleAddCharacter} />
-      <CharacterList characters={characters} onDelete={(index) => setCharacters(characters.filter((_, i) => i !== index))} />
-      <CampaignForm onSave={handleSaveCampaign} />
-      <CampaignList campaigns={campaigns} onDelete={(index) => setCampaigns(campaigns.filter((_, i) => i !== index))} />
-      <div>
-        <Link to="/">Back to Worlds</Link>
-      </div>
+      {showTextarea ? (
+        <>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="World description"
+          />
+          <button onClick={handleSaveDescription}>Save Description</button>
+        </>
+      ) : (
+        <p onClick={() => setShowTextarea(true)}>{description || "Click to add description"}</p>
+      )}
+      <h2 onClick={() => setShowCharacterForm(!showCharacterForm)}>Characters</h2>
+      {showCharacterForm && <CharacterForm onAddCharacter={handleAddCharacter} />}
+      <CharacterList characters={characters} onDelete={handleDeleteCharacter} />
+      <CampaignForm onSave={handleAddCampaign} />
+      <CampaignList campaigns={campaigns} onDelete={handleDeleteCampaign} />
       <button onClick={handleDeleteWorld}>Delete World</button>
+      <br></br>
+      <Link to="/"><button>Back to World List</button></Link>
     </div>
   );
 };

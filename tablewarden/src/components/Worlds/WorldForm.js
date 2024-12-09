@@ -18,7 +18,7 @@ const WorldForm = ({ onAddWorld }) => {
         onChange={(e) => setWorldName(e.target.value)}
         placeholder="World name"
       />
-      <button onClick={handleAdd}>Add</button>
+      <button onClick={handleAdd}>Add</button> {/* Dodany przycisk "Add" */}
     </div>
   );
 };

@@ -17,7 +17,7 @@ const CampaignForm = ({ onSave }) => {
         onChange={(e) => setCampaignName(e.target.value)}
         placeholder="Campaign name"
       />
-      <button onClick={handleSave}>Save</button>
+      <button onClick={handleSave}>Save</button> {/* Dodany przycisk "Save" */}
     </div>
   );
 };

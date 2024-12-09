@@ -19,9 +19,9 @@ const Home = ({ worlds, setWorlds }) => {
       <h3>Worlds</h3>
       <ul>
         {worlds.map((world, index) => (
-          <li key={index}>
-            <Link to={`/world/${world}`}>{world}</Link>
-            <button onClick={() => handleDeleteWorld(world)}>Delete</button>
+          <li key={index} className="item">
+            <Link to={`/world/${world}`}><button>{world}</button></Link>
+            <button className="delete-button" onClick={() => handleDeleteWorld(world)}>X</button>
           </li>
         ))}
       </ul>

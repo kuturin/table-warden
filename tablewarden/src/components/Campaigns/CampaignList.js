@@ -6,12 +6,9 @@ const CampaignList = ({ campaigns, onDelete }) => {
       <h2>Campaigns</h2>
       <ul>
         {campaigns.map((campaign, index) => (
-          <li key={index}>
+          <li key={index} className="item">
             {campaign}
-            <button onClick={() => {
-              console.log('Usuwanie kampanii:', index);
-              onDelete(index);
-            }}>Delete</button>
+            <button className="delete-button" onClick={() => onDelete(index)}>X</button>
           </li>
         ))}
       </ul>
