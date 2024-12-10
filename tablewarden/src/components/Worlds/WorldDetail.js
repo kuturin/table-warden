@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import CharacterForm from './components/Characters/CharacterForm';
-import CampaignForm from './components/Campaigns/CampaignForm';
-import CharacterList from './components/Characters/CharacterList';
-import CampaignList from './components/Campaigns/CampaignList';
+import CharacterForm from '../Characters/CharacterForm';
+import CampaignForm from '../Campaigns/CampaignForm';
+import CharacterList from '../Characters/CharacterList';
+import CampaignList from '../Campaigns/CampaignList';
 
 const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescriptions }) => {
   const { worldName } = useParams();
@@ -12,20 +12,27 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
   const [showTextarea, setShowTextarea] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [showCharacterForm, setShowCharacterForm] = useState(false);
+  const [showCampaignForm, setShowCampaignForm] = useState(false);
   const [characters, setCharacters] = useState(() => {
     const storedCharacters = JSON.parse(localStorage.getItem(`${worldName}-characters`)) || [];
-    return storedCharacters;
+    return Array.isArray(storedCharacters) ? storedCharacters : [];
   });
   const [campaigns, setCampaigns] = useState(() => {
     const storedCampaigns = JSON.parse(localStorage.getItem(`${worldName}-campaigns`)) || [];
-    return storedCampaigns;
+    return Array.isArray(storedCampaigns) ? storedCampaigns : [];
   });
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('WorldDetail characters:', characters); // Dodaj logowanie w konsoli
     setNewWorldName(worldName);
     setDescription(worldDescriptions[worldName] || "");
-  }, [worldName, worldDescriptions]);
+  }, [worldName, worldDescriptions, characters]);
+
+  useEffect(() => {
+    localStorage.setItem(`${worldName}-characters`, JSON.stringify(characters));
+    localStorage.setItem(`${worldName}-campaigns`, JSON.stringify(campaigns));
+  }, [characters, campaigns, worldName]);
 
   const handleSaveName = () => {
     if (newWorldName.trim() !== "" && newWorldName !== worldName) {
@@ -122,13 +129,13 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
       ) : (
         <p onClick={() => setShowTextarea(true)}>{description || "Click to add description"}</p>
       )}
-      <h2 onClick={() => setShowCharacterForm(!showCharacterForm)}>Characters</h2>
+      <h3 onClick={() => setShowCharacterForm(!showCharacterForm)}>Characters</h3>
       {showCharacterForm && <CharacterForm onAddCharacter={handleAddCharacter} />}
-      <CharacterList characters={characters} onDelete={handleDeleteCharacter} />
-      <CampaignForm onSave={handleAddCampaign} />
+      <CharacterList characters={characters || []} onDelete={handleDeleteCharacter} />
+      <h3 onClick={() => setShowCampaignForm(!showCampaignForm)}>Campaigns</h3>
+      {showCampaignForm && <CampaignForm onSave={handleAddCampaign} />}
       <CampaignList campaigns={campaigns} onDelete={handleDeleteCampaign} />
       <button onClick={handleDeleteWorld}>Delete World</button>
-      <br></br>
       <Link to="/"><button>Back to World List</button></Link>
     </div>
   );

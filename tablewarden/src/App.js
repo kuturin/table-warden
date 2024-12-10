@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Home';
-import WorldDetail from './WorldDetail';
+import WorldDetail from './components/Worlds/WorldDetail';
+import CharacterDetail from './components/Characters/CharacterDetail';
+import CampaignDetail from './components/Campaigns/CampaignDetail';
 import './App.css';
 
 const App = () => {
@@ -28,6 +30,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home worlds={worlds} setWorlds={setWorlds} />} />
             <Route path="/world/:worldName" element={<WorldDetail worlds={worlds} setWorlds={setWorlds} worldDescriptions={worldDescriptions} setWorldDescriptions={setWorldDescriptions} />} />
+            <Route path="/character/:characterName" element={<CharacterDetail />} />
+            <Route path="/campaign/:campaignName" element={<CampaignDetail />} />
           </Routes>
         </div>
         <div className="sidebar"></div>

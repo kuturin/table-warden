@@ -1,13 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const CampaignList = ({ campaigns, onDelete }) => {
+const CampaignList = ({ campaigns = [], onDelete }) => {
+  console.log('Received campaigns:', campaigns);
+
   return (
     <div>
-      <h2>Campaigns</h2>
       <ul>
         {campaigns.map((campaign, index) => (
           <li key={index} className="item">
-            {campaign}
+            <Link to={`/campaign/${campaign}`}><button>{campaign}</button></Link>
             <button className="delete-button" onClick={() => onDelete(index)}>X</button>
           </li>
         ))}

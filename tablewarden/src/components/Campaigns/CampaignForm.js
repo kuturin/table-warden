@@ -10,14 +10,13 @@ const CampaignForm = ({ onSave }) => {
 
   return (
     <div>
-      <h2>Create Campaign</h2>
       <input
         type="text"
         value={campaignName}
         onChange={(e) => setCampaignName(e.target.value)}
         placeholder="Campaign name"
       />
-      <button onClick={handleSave}>Save</button> {/* Dodany przycisk "Save" */}
+      <button onClick={handleSave}>Add</button> {/* Dodany przycisk "Save" */}
     </div>
   );
 };
