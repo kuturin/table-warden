@@ -1,17 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const CharacterList = ({ characters, onDelete }) => {
+const CharacterList = ({ characters = [], onDelete }) => {
+  console.log('Received characters:', characters);
+
   return (
     <div>
-      <h3>Characters</h3>
       <ul>
         {characters.map((character, index) => (
-          <li key={index}>
-            {character}
-            <button onClick={() => {
-              console.log('Usuwanie postaci:', index);
-              onDelete(index);
-            }}>Delete</button>
+          <li key={index} className="item">
+            <Link to={`/character/${character}`}><button>{character}</button></Link>
+            <button className="delete-button" onClick={() => onDelete(index)}>X</button>
           </li>
         ))}
       </ul>

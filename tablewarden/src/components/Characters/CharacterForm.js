@@ -10,14 +10,13 @@ const CharacterForm = ({ onAddCharacter }) => {
 
   return (
     <div>
-      <h3>Add a Character</h3>
       <input
         type="text"
         value={characterName}
         onChange={(e) => setCharacterName(e.target.value)}
         placeholder="Character name"
       />
-      <button onClick={handleAdd}>Add</button>
+      <button onClick={handleAdd}>Add</button> {/* Dodany przycisk "Add" */}
     </div>
   );
 };

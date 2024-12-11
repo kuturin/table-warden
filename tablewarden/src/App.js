@@ -1,98 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import CampaignForm from './components/Campaigns/CampaignForm';
-import CampaignList from './components/Campaigns/CampaignList';
-import CharacterForm from './components/Characters/CharacterForm';
-import CharacterList from './components/Characters/CharacterList';
-import WorldForm from './components/Worlds/WorldForm';
-import WorldList from './components/Worlds/WorldList';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './Home';
+import WorldDetail from './components/Worlds/WorldDetail';
+import CharacterDetail from './components/Characters/CharacterDetail';
+import CampaignDetail from './components/Campaigns/CampaignDetail';
+import './App.css';
 
 const App = () => {
-  const [campaigns, setCampaigns] = useState(() => {
-    const storedCampaigns = JSON.parse(localStorage.getItem('campaigns')) || [];
-    console.log('Inicjalizacja kampanii z Local Storage:', storedCampaigns);
-    return storedCampaigns;
-  });
-  const [characters, setCharacters] = useState(() => {
-    const storedCharacters = JSON.parse(localStorage.getItem('characters')) || [];
-    console.log('Inicjalizacja postaci z Local Storage:', storedCharacters);
-    return storedCharacters;
-  });
   const [worlds, setWorlds] = useState(() => {
     const storedWorlds = JSON.parse(localStorage.getItem('worlds')) || [];
-    console.log('Inicjalizacja światów z Local Storage:', storedWorlds);
     return storedWorlds;
   });
 
-  // Zapis danych do Local Storage
+  const [worldDescriptions, setWorldDescriptions] = useState(() => {
+    const storedDescriptions = JSON.parse(localStorage.getItem('worldDescriptions')) || {};
+    return storedDescriptions;
+  });
+
   useEffect(() => {
-    console.log('Zapisywanie danych do Local Storage');
-    console.log('Kampanie:', campaigns);
-    console.log('Postacie:', characters);
-    console.log('Światy:', worlds);
-
-    localStorage.setItem('campaigns', JSON.stringify(campaigns));
-    localStorage.setItem('characters', JSON.stringify(characters));
     localStorage.setItem('worlds', JSON.stringify(worlds));
-  }, [campaigns, characters, worlds]);
-
-  const handleSaveCampaign = (campaignName) => {
-    if (campaignName.trim() !== "") {
-      const updatedCampaigns = [...campaigns, campaignName];
-      setCampaigns(updatedCampaigns);
-      console.log('Kampanie po dodaniu:', updatedCampaigns);
-    } else {
-      console.error('Nazwa kampanii nie może być pusta.');
-    }
-  };
-
-  const handleAddCharacter = (characterName) => {
-    if (characterName.trim() !== "") {
-      const updatedCharacters = [...characters, characterName];
-      setCharacters(updatedCharacters);
-      console.log('Postacie po dodaniu:', updatedCharacters);
-    } else {
-      console.error('Nazwa postaci nie może być pusta.');
-    }
-  };
-
-  const handleAddWorld = (worldName) => {
-    if (worldName.trim() !== "") {
-      const updatedWorlds = [...worlds, worldName];
-      setWorlds(updatedWorlds);
-      console.log('Światy po dodaniu:', updatedWorlds);
-    } else {
-      console.error('Nazwa świata nie może być pusta.');
-    }
-  };
-
-  const handleDeleteCampaign = (index) => {
-    const updatedCampaigns = campaigns.filter((_, i) => i !== index);
-    setCampaigns(updatedCampaigns);
-    console.log('Kampanie po usunięciu:', updatedCampaigns);
-  };
-
-  const handleDeleteCharacter = (index) => {
-    const updatedCharacters = characters.filter((_, i) => i !== index);
-    setCharacters(updatedCharacters);
-    console.log('Postacie po usunięciu:', updatedCharacters);
-  };
-
-  const handleDeleteWorld = (index) => {
-    const updatedWorlds = worlds.filter((_, i) => i !== index);
-    setWorlds(updatedWorlds);
-    console.log('Światy po usunięciu:', updatedWorlds);
-  };
+    localStorage.setItem('worldDescriptions', JSON.stringify(worldDescriptions));
+  }, [worlds, worldDescriptions]);
 
   return (
-    <div>
-      <h1>Table Warden</h1>
-      <CampaignForm onSave={handleSaveCampaign} />
-      <CampaignList campaigns={campaigns} onDelete={handleDeleteCampaign} />
-      <CharacterForm onAddCharacter={handleAddCharacter} />
-      <CharacterList characters={characters} onDelete={handleDeleteCharacter} />
-      <WorldForm onAddWorld={handleAddWorld} />
-      <WorldList worlds={worlds} onDelete={handleDeleteWorld} />
-    </div>
+    <Router>
+      <div className="grid-container">
+        <div className="sidebar"></div>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home worlds={worlds} setWorlds={setWorlds} />} />
+            <Route path="/world/:worldName" element={<WorldDetail worlds={worlds} setWorlds={setWorlds} worldDescriptions={worldDescriptions} setWorldDescriptions={setWorldDescriptions} />} />
+            <Route path="/character/:characterName" element={<CharacterDetail />} />
+            <Route path="/campaign/:campaignName" element={<CampaignDetail />} />
+          </Routes>
+        </div>
+        <div className="sidebar"></div>
+      </div>
+    </Router>
   );
 };
 
