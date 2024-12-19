@@ -24,10 +24,9 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('WorldDetail characters:', characters); // Dodaj logowanie w konsoli
     setNewWorldName(worldName);
     setDescription(worldDescriptions[worldName] || "");
-  }, [worldName, worldDescriptions, characters]);
+  }, [worldName, worldDescriptions]);
 
   useEffect(() => {
     localStorage.setItem(`${worldName}-characters`, JSON.stringify(characters));
@@ -51,7 +50,7 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
 
       navigate(`/world/${newWorldName}`);
     }
-    setShowInput(false); // Ukryj pole tekstowe i przycisk po zapisaniu nazwy
+    setShowInput(false);
   };
 
   const handleSaveDescription = () => {
@@ -61,7 +60,7 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
     };
     setWorldDescriptions(updatedDescriptions);
     localStorage.setItem('worldDescriptions', JSON.stringify(updatedDescriptions));
-    setShowTextarea(false); // Ukryj pole tekstowe i przycisk po zapisaniu opisu
+    setShowTextarea(false);
   };
 
   const handleDeleteWorld = () => {
@@ -79,7 +78,7 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
   };
 
   const handleAddCharacter = (characterName) => {
-    const updatedCharacters = [...characters, characterName];
+    const updatedCharacters = [...characters, { id: characterName, name: characterName, description: '' }];
     setCharacters(updatedCharacters);
     localStorage.setItem(`${worldName}-characters`, JSON.stringify(updatedCharacters));
   };
@@ -91,7 +90,7 @@ const WorldDetail = ({ worlds, setWorlds, worldDescriptions, setWorldDescription
   };
 
   const handleAddCampaign = (campaignName) => {
-    const updatedCampaigns = [...campaigns, campaignName];
+    const updatedCampaigns = [...campaigns, { id: campaignName, name: campaignName, description: '' }];
     setCampaigns(updatedCampaigns);
     localStorage.setItem(`${worldName}-campaigns`, JSON.stringify(updatedCampaigns));
   };

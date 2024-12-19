@@ -17,10 +17,22 @@ const App = () => {
     return storedDescriptions;
   });
 
+  const [characters, setCharacters] = useState(() => {
+    const storedCharacters = JSON.parse(localStorage.getItem('characters')) || [];
+    return storedCharacters;
+  });
+
+  const [campaigns, setCampaigns] = useState(() => {
+    const storedCampaigns = JSON.parse(localStorage.getItem('campaigns')) || [];
+    return storedCampaigns;
+  });
+
   useEffect(() => {
     localStorage.setItem('worlds', JSON.stringify(worlds));
     localStorage.setItem('worldDescriptions', JSON.stringify(worldDescriptions));
-  }, [worlds, worldDescriptions]);
+    localStorage.setItem('characters', JSON.stringify(characters));
+    localStorage.setItem('campaigns', JSON.stringify(campaigns));
+  }, [worlds, worldDescriptions, characters, campaigns]);
 
   return (
     <Router>
@@ -30,11 +42,10 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home worlds={worlds} setWorlds={setWorlds} />} />
             <Route path="/world/:worldName" element={<WorldDetail worlds={worlds} setWorlds={setWorlds} worldDescriptions={worldDescriptions} setWorldDescriptions={setWorldDescriptions} />} />
-            <Route path="/character/:characterName" element={<CharacterDetail />} />
-            <Route path="/campaign/:campaignName" element={<CampaignDetail />} />
+            <Route path="/character/:characterId" element={<CharacterDetail characters={characters} />} />
+            <Route path="/campaign/:campaignId" element={<CampaignDetail campaigns={campaigns} setCampaigns={setCampaigns} />} />
           </Routes>
         </div>
-        <div className="sidebar"></div>
       </div>
     </Router>
   );
