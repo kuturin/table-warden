@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const CharacterCreation = ({ addCharacter }) => {
+const CharacterEdit = ({ characters, updateCharacter }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const character = characters.find(character => character.id === parseInt(id));
+
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [photo, setPhoto] = useState(null);
@@ -10,15 +14,26 @@ const CharacterCreation = ({ addCharacter }) => {
   const [birthday, setBirthday] = useState('');
   const [isDead, setIsDead] = useState(false);
   const [dateOfDeath, setDateOfDeath] = useState('');
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (character) {
+      setName(character.name);
+      setAge(character.age);
+      setPhoto(character.photo);
+      setDescription(character.description);
+      setBirthday(character.birthday);
+      setIsDead(character.isDead);
+      setDateOfDeath(character.dateOfDeath);
+    }
+  }, [character]);
 
   const handleCheckboxChange = (event) => {
     setIsDead(event.target.checked);
   };
 
   const handleSave = () => {
-    const newCharacter = {
-      id: Date.now(),
+    const updatedCharacter = {
+      id: character.id,
       name,
       age,
       photo,
@@ -27,7 +42,7 @@ const CharacterCreation = ({ addCharacter }) => {
       isDead,
       dateOfDeath,
     };
-    addCharacter(newCharacter);
+    updateCharacter(updatedCharacter);
     navigate('/list');
   };
 
@@ -49,7 +64,7 @@ const CharacterCreation = ({ addCharacter }) => {
         Birthday: <input type="date" value={birthday} onChange={(e) => setBirthday(e.target.value)} />
       </div>
       <div>
-        <input type="checkbox" onChange={handleCheckboxChange} /> Dead
+        <input type="checkbox" checked={isDead} onChange={handleCheckboxChange} /> Dead
       </div>
       {isDead && (
         <div>
@@ -59,14 +74,8 @@ const CharacterCreation = ({ addCharacter }) => {
       <div>
         <button onClick={handleSave}>Save</button>
       </div>
-      <div>
-        <Link to="/list">Go to characters' list</Link>
-      </div>
-      <div>
-        <Link to="/">Back to Home</Link>
-      </div>
     </div>
   );
 };
 
-export default CharacterCreation;
+export default CharacterEdit;

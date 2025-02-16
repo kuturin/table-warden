@@ -9,8 +9,11 @@ const CharacterList = ({ characters, removeCharacter }) => {
       <ul>
         {characters.map(character => (
           <li key={character.id}>
-            {character.name} - Age: {character.age}
+            {character.name} - Age: {character.age} years old
+            <Link to={`/edit/${character.id}`}>
             <button onClick={() => removeCharacter(character.id)}>Remove</button>
+              <button>Edit</button>
+            </Link>
           </li>
         ))}
       </ul>
