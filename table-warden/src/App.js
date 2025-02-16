@@ -5,6 +5,7 @@ import Menu from './Menu';
 import CharacterCreation from './Character/CharacterCreation';
 import CharacterList from './Character/CharacterList';
 import CharacterEdit from './Character/CharacterEdit';
+import CharacterView from './Character/CharacterView';
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} />} />
           <Route path="/list" element={<CharacterList characters={characters} removeCharacter={removeCharacter} />} />
           <Route path="/edit/:id" element={<CharacterEdit characters={characters} updateCharacter={updateCharacter} />} />
+          <Route path="/view/:id" element={<CharacterView characters={characters} />} />
         </Routes>
       </div>
     </Router>
