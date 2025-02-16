@@ -1,8 +1,14 @@
 import React from 'react';
 import '../App.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CharacterList = ({ characters, removeCharacter }) => {
+  const navigate = useNavigate();
+
+  const handleEdit = (id) => {
+    navigate(`/edit/${id}`);
+  };
+
   return (
     <div>
       <h1>Character List</h1>
@@ -10,18 +16,16 @@ const CharacterList = ({ characters, removeCharacter }) => {
         {characters.map(character => (
           <li key={character.id}>
             {character.name} - Age: {character.age} years old
-            <Link to={`/edit/${character.id}`}>
+            <button onClick={() => handleEdit(character.id)}>Edit</button>
             <button onClick={() => removeCharacter(character.id)}>Remove</button>
-              <button>Edit</button>
-            </Link>
           </li>
         ))}
       </ul>
       <div>
-        <Link to="/create">Create Character</Link>
+        <button onClick={() => navigate('/create')}>Create Character</button>
       </div>
       <div>
-        <Link to="/">Back to Home</Link>
+        <button onClick={() => navigate('/')}>Back to Home</button>
       </div>
     </div>
   );
