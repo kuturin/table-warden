@@ -9,6 +9,10 @@ const CharacterList = ({ characters, removeCharacter }) => {
     navigate(`/edit/${id}`);
   };
 
+  const handleView = (id) => {
+    navigate(`/view/${id}`);
+  };
+
   return (
     <div>
       <h1>Character List</h1>
@@ -16,6 +20,7 @@ const CharacterList = ({ characters, removeCharacter }) => {
         {characters.map(character => (
           <li key={character.id}>
             {character.name} - Age: {character.age} years old
+            <button onClick={() => handleView(character.id)}>View</button>
             <button onClick={() => handleEdit(character.id)}>Edit</button>
             <button onClick={() => removeCharacter(character.id)}>Remove</button>
           </li>
