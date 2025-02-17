@@ -1,17 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Menu = () => {
+  const navigate = useNavigate();
+
   return (
     <nav>
-      <ul>
-        <li>
-          <Link to="/create">Create Character</Link>
-        </li>
-        <li>
-          <Link to="/list">Go to characters' list</Link>
-        </li>
-      </ul>
+      <div>
+          <button onClick={() => navigate('/list')}>Go to characters' list</button>
+      </div>
+      <div>
+          <button onClick={() => navigate('/placesList')}>Go to places</button>
+      </div>
+      
     </nav>
   );
 };

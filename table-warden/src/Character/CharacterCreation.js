@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 const CharacterCreation = ({ addCharacter }) => {
@@ -60,11 +60,9 @@ const CharacterCreation = ({ addCharacter }) => {
         <button onClick={handleSave}>Save</button>
       </div>
       <div>
-        <Link to="/list">Go to characters' list</Link>
+        <button onClick={() => navigate('/list')}>Cancel</button>
       </div>
-      <div>
-        <Link to="/">Back to Home</Link>
-      </div>
+      
     </div>
   );
 };
