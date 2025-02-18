@@ -7,12 +7,14 @@ const Menu = () => {
   return (
     <nav>
       <div>
-          <button onClick={() => navigate('/list')}>Go to characters' list</button>
+        <button onClick={() => navigate('/list')}>Go to characters' list</button>
       </div>
       <div>
-          <button onClick={() => navigate('/placesList')}>Go to places</button>
+        <button onClick={() => navigate('/placesList')}>Go to places</button>
       </div>
-      
+      <div>
+        <button onClick={() => navigate('/eventsList')}>Go to events</button>
+      </div>
     </nav>
   );
 };
