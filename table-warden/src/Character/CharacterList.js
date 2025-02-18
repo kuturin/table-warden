@@ -13,19 +13,32 @@ const CharacterList = ({ characters, removeCharacter }) => {
     navigate(`/view/${id}`);
   };
 
+  const renderCharacterList = (category) => {
+    return (
+      <ul>
+        {characters
+          .filter(character => character.category === category)
+          .map(character => (
+            <li key={character.id}>
+              {character.name} - Age: {character.age} years old
+              <button onClick={() => handleView(character.id)}>View</button>
+              <button onClick={() => handleEdit(character.id)}>Edit</button>
+              <button onClick={() => removeCharacter(character.id)}>Remove</button>
+            </li>
+          ))}
+      </ul>
+    );
+  };
+
   return (
     <div>
       <h1>Character List</h1>
-      <ul>
-        {characters.map(character => (
-          <li key={character.id}>
-            {character.name} - Age: {character.age} years old
-            <button onClick={() => handleView(character.id)}>View</button>
-            <button onClick={() => handleEdit(character.id)}>Edit</button>
-            <button onClick={() => removeCharacter(character.id)}>Remove</button>
-          </li>
-        ))}
-      </ul>
+      <h2>PC</h2>
+      {renderCharacterList('PC')}
+      <h2>NPC</h2>
+      {renderCharacterList('NPC')}
+      <h2>Creature</h2>
+      {renderCharacterList('Creature')}
       <div>
         <button onClick={() => navigate('/create')}>Create Character</button>
       </div>

@@ -4,6 +4,7 @@ import '../App.css';
 
 const CharacterCreation = ({ addCharacter }) => {
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('PC');
   const [age, setAge] = useState('');
   const [photo, setPhoto] = useState(null);
   const [description, setDescription] = useState('');
@@ -26,6 +27,7 @@ const CharacterCreation = ({ addCharacter }) => {
       birthday,
       isDead,
       dateOfDeath,
+      category,
     };
     addCharacter(newCharacter);
     navigate('/list');
@@ -35,6 +37,13 @@ const CharacterCreation = ({ addCharacter }) => {
     <div>
       <div>
         Character's Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      </div>
+      <div>
+      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <option value="PC">PC</option>
+          <option value="NPC">NPC</option>
+          <option value="Creature">Creature</option>
+        </select>
       </div>
       <div>
         Character's Age: <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />

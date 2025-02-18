@@ -15,6 +15,7 @@ const CharacterView = ({ characters }) => {
     <div>
       <h1>Character Details</h1>
       <p>Name: {character.name}</p>
+      <p>Category: {character.category}</p>
       <p>Age: {character.age}</p>
       <p>Description: {character.description}</p>
       <p>Birthday: {character.birthday}</p>

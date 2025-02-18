@@ -8,6 +8,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
   const character = characters.find(character => character.id === parseInt(id));
 
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('PC');
   const [age, setAge] = useState('');
   const [photo, setPhoto] = useState(null);
   const [description, setDescription] = useState('');
@@ -18,6 +19,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
   useEffect(() => {
     if (character) {
       setName(character.name);
+      setCategory(character.category);
       setAge(character.age);
       setPhoto(character.photo);
       setDescription(character.description);
@@ -35,6 +37,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
     const updatedCharacter = {
       id: character.id,
       name,
+      category,
       age,
       photo,
       description,
@@ -50,6 +53,13 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
     <div>
       <div>
         Character's Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      </div>
+      <div>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <option value="PC">PC</option>
+          <option value="NPC">NPC</option>
+          <option value="Creature">Creature</option>
+        </select>
       </div>
       <div>
         Character's Age: <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />
