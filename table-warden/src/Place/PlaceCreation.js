@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PlaceCreation = ({ addPlace, characters }) => {
+const PlaceCreation = ({ addPlace, addEvent, characters }) => { // Dodano addEvent
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [photo, setPhoto] = useState(null);
@@ -35,6 +35,28 @@ const PlaceCreation = ({ addPlace, characters }) => {
       ruler,
     };
     addPlace(newPlace);
+
+    const eventIdBase = Date.now();
+
+    // Create creation event
+    if (creation) {
+      addEvent({
+        id: eventIdBase + 1,
+        name: `Creation of ${name}`,
+        date: creation,
+        description: `Creation of ${name}`,
+      });
+    }
+
+     // Create destruction event
+     if (isDestroyed && dateOfDestruction) {
+      addEvent({
+        id: eventIdBase + 2,
+        name: `Destruction of ${name}`,
+        date: dateOfDestruction,
+        description: `Destruction of ${name}`,
+      });
+    }
     navigate('/placesList');
   };
 

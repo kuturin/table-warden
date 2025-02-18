@@ -67,12 +67,12 @@ function App() {
       <div>
         <ConditionalMenu />
         <Routes>
-          <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} />} />
+        <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} addEvent={addEvent} />} /> 
           <Route path="/list" element={<CharacterList characters={characters} removeCharacter={removeCharacter} />} />
           <Route path="/edit/:id" element={<CharacterEdit characters={characters} updateCharacter={updateCharacter} />} />
           <Route path="/view/:id" element={<CharacterView characters={characters} />} />
           <Route path="/placesList" element={<PlaceList places={places} removePlace={removePlace} />} />
-          <Route path="/placesCreate" element={<PlaceCreation addPlace={addPlace} characters={characters} />} />
+          <Route path="/placesCreate" element={<PlaceCreation addPlace={addPlace} addEvent={addEvent} characters={characters} />} /> 
           <Route path="/placesEdit/:id" element={<PlaceEdit places={places} updatePlace={updatePlace} characters={characters} />} />
           <Route path="/placesView/:id" element={<PlaceView places={places} />} />
           <Route path="/eventsCreate" element={<EventCreation addEvent={addEvent} />} />

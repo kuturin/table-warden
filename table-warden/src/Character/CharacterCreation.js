@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const CharacterCreation = ({ addCharacter }) => {
+const CharacterCreation = ({ addCharacter, addEvent }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('PC');
   const [age, setAge] = useState('');
@@ -30,6 +30,29 @@ const CharacterCreation = ({ addCharacter }) => {
       category,
     };
     addCharacter(newCharacter);
+
+    const eventIdBase = Date.now();
+
+    // Create birthday event
+    if (birthday) {
+      addEvent({
+        id: eventIdBase + 1,
+        name: `Birthday of ${name}`,
+        date: birthday,
+        description: `Birthday of ${name}`,
+      });
+    }
+
+    // Create death event
+    if (isDead && dateOfDeath) {
+      addEvent({
+        id: eventIdBase + 2,
+        name: `Death of ${name}`,
+        date: dateOfDeath,
+        description: `Death of ${name}`,
+      });
+    }
+
     navigate('/list');
   };
 
