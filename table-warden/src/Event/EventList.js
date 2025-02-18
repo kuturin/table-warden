@@ -31,6 +31,9 @@ const EventList = ({ events, removeEvent }) => {
         <button onClick={() => navigate('/eventsCreate')}>Create Event</button>
       </div>
       <div>
+        <button onClick={() => navigate('/timeline')}>View Timeline</button> {/* Dodano */}
+      </div>
+      <div>
         <button onClick={() => navigate('/')}>Back to Home</button>
       </div>
     </div>
