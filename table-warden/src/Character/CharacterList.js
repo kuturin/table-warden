@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
 
 const CharacterList = ({ characters, removeCharacter }) => {
   const navigate = useNavigate();
+  const [showPC, setShowPC] = useState(true);
+  const [showNPC, setShowNPC] = useState(true);
+  const [showCreature, setShowCreature] = useState(true);
 
   const handleEdit = (id) => {
     navigate(`/edit/${id}`);
@@ -33,12 +36,27 @@ const CharacterList = ({ characters, removeCharacter }) => {
   return (
     <div>
       <h1>Character List</h1>
-      <h2>PC</h2>
-      {renderCharacterList('PC')}
-      <h2>NPC</h2>
-      {renderCharacterList('NPC')}
-      <h2>Creature</h2>
-      {renderCharacterList('Creature')}
+      <div>
+        <h2>PCs</h2>
+        <button onClick={() => setShowPC(!showPC)}>
+          {showPC ? 'Hide' : 'Show'} PC
+        </button>
+        {showPC && renderCharacterList('PC')}
+      </div>
+      <div>
+        <h2>NPCs</h2>
+        <button onClick={() => setShowNPC(!showNPC)}>
+          {showNPC ? 'Hide' : 'Show'} NPC
+        </button>
+        {showNPC && renderCharacterList('NPC')}
+      </div>
+      <div>
+        <h2>Creatures</h2>
+        <button onClick={() => setShowCreature(!showCreature)}>
+          {showCreature ? 'Hide' : 'Show'} Creature
+        </button>
+        {showCreature && renderCharacterList('Creature')}
+      </div>
       <div>
         <button onClick={() => navigate('/create')}>Create Character</button>
       </div>
