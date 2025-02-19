@@ -19,6 +19,10 @@ const MyCalendar = ({ events }) => {
       <Calendar
         onChange={handleDateChange}
         value={selectedDate}
+        tileContent={({ date, view }) => {
+          const event = events.find(event => new Date(event.date).toDateString() === date.toDateString());
+          return event ? <div style={{ backgroundColor: event.color, height: '5px' }}></div> : null;
+        }}
       />
       {selectedEvent && (
         <div>

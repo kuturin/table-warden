@@ -10,6 +10,7 @@ const EventCreation = ({ addEvent, characters = [], places = [] }) => {
   const [endDate, setEndDate] = useState('');
   const [selectedCharacter, setSelectedCharacter] = useState('');
   const [selectedPlace, setSelectedPlace] = useState('');
+  const [color, setColor] = useState('#000000'); // Dodaj pole koloru
   const navigate = useNavigate();
 
   const handleSave = (event) => {
@@ -22,6 +23,7 @@ const EventCreation = ({ addEvent, characters = [], places = [] }) => {
       description,
       characterId: selectedCharacter || null,
       placeId: selectedPlace || null,
+      color // Dodaj kolor do nowego wydarzenia
     };
     addEvent(newEvent);
     navigate('/eventsList');
@@ -71,6 +73,10 @@ const EventCreation = ({ addEvent, characters = [], places = [] }) => {
             <option key={place.id} value={place.id}>{place.name}</option>
           ))}
         </select>
+      </div>
+      <div>
+        <label>Color:</label>
+        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} /> {/* Dodaj pole wyboru koloru */}
       </div>
       <div>
         <button onClick={handleSave}>Save</button>

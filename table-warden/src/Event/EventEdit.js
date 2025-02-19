@@ -14,6 +14,7 @@ const EventEdit = ({ events, updateEvent, characters, places }) => {
   const [endDate, setEndDate] = useState('');
   const [selectedCharacter, setSelectedCharacter] = useState('');
   const [selectedPlace, setSelectedPlace] = useState('');
+  const [color, setColor] = useState('#000000'); // Dodaj pole koloru
 
   useEffect(() => {
     if (event) {
@@ -24,6 +25,7 @@ const EventEdit = ({ events, updateEvent, characters, places }) => {
       setEndDate(event.endDate || '');
       setSelectedCharacter(event.characterId || '');
       setSelectedPlace(event.placeId || '');
+      setColor(event.color || '#000000'); // Ustaw kolor
     }
   }, [event]);
 
@@ -37,6 +39,7 @@ const EventEdit = ({ events, updateEvent, characters, places }) => {
       description,
       characterId: selectedCharacter || null,
       placeId: selectedPlace || null,
+      color // Dodaj kolor do zaktualizowanego wydarzenia
     };
     updateEvent(updatedEvent);
     navigate('/eventsList');
@@ -86,6 +89,10 @@ const EventEdit = ({ events, updateEvent, characters, places }) => {
             <option key={place.id} value={place.id}>{place.name}</option>
           ))}
         </select>
+      </div>
+      <div>
+        <label>Color:</label>
+        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} /> {/* Dodaj pole wyboru koloru */}
       </div>
       <div>
         <button onClick={handleSave}>Save</button>

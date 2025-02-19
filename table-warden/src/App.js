@@ -20,21 +20,7 @@ import MyCalendar from './Event/Calendar/MyCalendar';
 function App() {
   const [characters, setCharacters] = useState([]);
   const [places, setPlaces] = useState([]);
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      name: 'Event 1',
-      date: '2025-02-19',
-      endDate: '2025-02-20',
-      description: 'Description for Event 1'
-    },
-    {
-      id: 2,
-      name: 'Event 2',
-      date: '2025-02-21',
-      description: 'Description for Event 2'
-    }
-  ]);
+  const [events, setEvents] = useState([]);
 
   const addCharacter = (character) => {
     setCharacters([...characters, character]);
@@ -96,7 +82,7 @@ function App() {
           <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} characters={characters} places={places} />} />
           <Route path="/eventsView/:id" element={<EventView events={events} characters={characters} places={places} />} />
           <Route path="/timeline" element={<Timeline events={events} />} />
-          <Route path="/calendar" element={<MyCalendar events={events} />} /> {/* Dodano trasę do kalendarza */}
+          <Route path="/calendar" element={<MyCalendar events={events} />} />
         </Routes>
       </div>
     </Router>
