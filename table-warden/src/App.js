@@ -15,12 +15,26 @@ import EventCreation from './Event/EventCreation';
 import EventEdit from './Event/EventEdit';
 import EventView from './Event/EventView';
 import Timeline from './Event/timeline/timeline';
-
+import MyCalendar from './Event/Calendar/MyCalendar';
 
 function App() {
   const [characters, setCharacters] = useState([]);
   const [places, setPlaces] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([
+    {
+      id: 1,
+      name: 'Event 1',
+      date: '2025-02-19',
+      endDate: '2025-02-20',
+      description: 'Description for Event 1'
+    },
+    {
+      id: 2,
+      name: 'Event 2',
+      date: '2025-02-21',
+      description: 'Description for Event 2'
+    }
+  ]);
 
   const addCharacter = (character) => {
     setCharacters([...characters, character]);
@@ -69,7 +83,7 @@ function App() {
       <div>
         <ConditionalMenu />
         <Routes>
-        <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} addEvent={addEvent} />} /> 
+          <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} addEvent={addEvent} />} /> 
           <Route path="/list" element={<CharacterList characters={characters} removeCharacter={removeCharacter} />} />
           <Route path="/edit/:id" element={<CharacterEdit characters={characters} updateCharacter={updateCharacter} />} />
           <Route path="/view/:id" element={<CharacterView characters={characters} />} />
@@ -82,6 +96,7 @@ function App() {
           <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} characters={characters} places={places} />} />
           <Route path="/eventsView/:id" element={<EventView events={events} characters={characters} places={places} />} />
           <Route path="/timeline" element={<Timeline events={events} />} />
+          <Route path="/calendar" element={<MyCalendar events={events} />} /> {/* Dodano trasę do kalendarza */}
         </Routes>
       </div>
     </Router>
@@ -90,7 +105,7 @@ function App() {
 
 function ConditionalMenu() {
   const location = useLocation();
-  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/eventsList', '/eventsCreate', '/eventsEdit', '/eventsView', '/timeline'];
+  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/eventsList', '/eventsCreate', '/eventsEdit', '/eventsView', '/timeline', '/calendar'];
   const shouldHideMenu = hideMenuPaths.some(path => location.pathname.startsWith(path));
   console.log(`Current path: ${location.pathname}, shouldHideMenu: ${shouldHideMenu}`);
   return !shouldHideMenu ? <Menu /> : null;
