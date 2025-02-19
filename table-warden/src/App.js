@@ -81,6 +81,7 @@ function App() {
           <Route path="/eventsList" element={<EventList events={events} removeEvent={removeEvent} />} />
           <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} />} />
           <Route path="/eventsView/:id" element={<EventView events={events} />} />
+          <Route path="/timeline" element={<Timeline events={events} />} />
         </Routes>
       </div>
     </Router>
