@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Timeline = ({ events }) => {
   const navigate = useNavigate();
+  const [expandedEventId, setExpandedEventId] = useState(null);
 
   // Sort events by date
   const sortedEvents = events.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -45,19 +46,34 @@ const Timeline = ({ events }) => {
     return acc;
   }, {});
 
+  const toggleExpand = (eventId) => {
+    setExpandedEventId(expandedEventId === eventId ? null : eventId);
+  };
+
   return (
     <div>
       <h1>Timeline</h1>
       {Object.keys(eventsByYearMonth).map(year => (
         <div key={year}>
-          <h2>{year}</h2>
+          <h2>Year: {year}</h2>
           {Object.keys(eventsByYearMonth[year]).map(month => (
             <div key={month}>
               <h3>{month}</h3>
               <ul>
                 {eventsByYearMonth[year][month].map(event => (
                   <li key={`${event.id}-${event.type || 'single'}`}>
-                    {event.name} {event.type && `(${event.type})`}
+                    <div onClick={() => toggleExpand(event.id)}>
+                      {event.name} {event.type && `(${event.type})`}
+                    </div>
+                    {expandedEventId === event.id && (
+                      <div>
+                        <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+                        {event.endDate && <p>Ending Date: {new Date(event.endDate).toLocaleDateString()}</p>}
+                        <p>{event.description}</p>
+                        <button onClick={() => navigate(`/eventsEdit/${event.id}`)}>Edit</button>
+                        <button onClick={() => navigate(`/eventsView/${event.id}`)}>View</button>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
