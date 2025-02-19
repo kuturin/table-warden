@@ -14,6 +14,8 @@ import EventList from './Event/EventList';
 import EventCreation from './Event/EventCreation';
 import EventEdit from './Event/EventEdit';
 import EventView from './Event/EventView';
+import Timeline from './Event/timeline/timeline';
+
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -75,10 +77,10 @@ function App() {
           <Route path="/placesCreate" element={<PlaceCreation addPlace={addPlace} addEvent={addEvent} characters={characters} />} /> 
           <Route path="/placesEdit/:id" element={<PlaceEdit places={places} updatePlace={updatePlace} characters={characters} />} />
           <Route path="/placesView/:id" element={<PlaceView places={places} />} />
-          <Route path="/eventsCreate" element={<EventCreation addEvent={addEvent} characters={characters} places={places} />} />
-          <Route path="/eventsList" element={<EventList events={events} removeEvent={removeEvent}  />} />
-          <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} characters={characters} places={places} />} />
-          <Route path="/eventsView/:id" element={<EventView events={events} characters={characters} places={places} />} />
+          <Route path="/eventsCreate" element={<EventCreation addEvent={addEvent} />} />
+          <Route path="/eventsList" element={<EventList events={events} removeEvent={removeEvent} />} />
+          <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} />} />
+          <Route path="/eventsView/:id" element={<EventView events={events} />} />
         </Routes>
       </div>
     </Router>
@@ -87,7 +89,7 @@ function App() {
 
 function ConditionalMenu() {
   const location = useLocation();
-  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/eventsList', '/eventsCreate', '/eventsEdit', '/eventsView'];
+  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/eventsList', '/eventsCreate', '/eventsEdit', '/eventsView', '/timeline'];
   const shouldHideMenu = hideMenuPaths.some(path => location.pathname.startsWith(path));
   console.log(`Current path: ${location.pathname}, shouldHideMenu: ${shouldHideMenu}`);
   return !shouldHideMenu ? <Menu /> : null;
