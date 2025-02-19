@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const EventCreation = ({ addEvent }) => {
+const EventCreation = ({ addEvent, characters = [], places = [] }) => {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [isMultiDay, setIsMultiDay] = useState(false);
   const [endDate, setEndDate] = useState('');
+  const [selectedCharacter, setSelectedCharacter] = useState('');
+  const [selectedPlace, setSelectedPlace] = useState('');
   const navigate = useNavigate();
 
   const handleSave = (event) => {
@@ -18,6 +20,8 @@ const EventCreation = ({ addEvent }) => {
       date,
       endDate: isMultiDay ? endDate : null,
       description,
+      characterId: selectedCharacter || null,
+      placeId: selectedPlace || null,
     };
     addEvent(newEvent);
     navigate('/eventsList');
@@ -49,6 +53,24 @@ const EventCreation = ({ addEvent }) => {
       <div>
         <label>Description:</label>
         <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
+      </div>
+      <div>
+        <label>Character:</label>
+        <select value={selectedCharacter} onChange={(e) => setSelectedCharacter(e.target.value)}>
+          <option value="">None</option>
+          {characters.map(character => (
+            <option key={character.id} value={character.id}>{character.name}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label>Place:</label>
+        <select value={selectedPlace} onChange={(e) => setSelectedPlace(e.target.value)}>
+          <option value="">None</option>
+          {places.map(place => (
+            <option key={place.id} value={place.id}>{place.name}</option>
+          ))}
+        </select>
       </div>
       <div>
         <button onClick={handleSave}>Save</button>

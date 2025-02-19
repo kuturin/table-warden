@@ -40,6 +40,7 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
         name: `Birthday of ${name}`,
         date: birthday,
         description: `Birthday of ${name}`,
+        characterId: newCharacter.id,
       });
     }
 
@@ -50,6 +51,7 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
         name: `Death of ${name}`,
         date: dateOfDeath,
         description: `Death of ${name}`,
+        characterId: newCharacter.id,
       });
     }
 
@@ -62,7 +64,7 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
         Character's Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div>
-      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="PC">PC</option>
           <option value="NPC">NPC</option>
           <option value="Creature">Creature</option>
@@ -94,7 +96,6 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
       <div>
         <button onClick={() => navigate('/list')}>Cancel</button>
       </div>
-      
     </div>
   );
 };

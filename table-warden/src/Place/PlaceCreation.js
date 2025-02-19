@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PlaceCreation = ({ addPlace, addEvent, characters }) => { // Dodano addEvent
+const PlaceCreation = ({ addPlace, addEvent, characters }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [photo, setPhoto] = useState(null);
@@ -45,56 +45,73 @@ const PlaceCreation = ({ addPlace, addEvent, characters }) => { // Dodano addEve
         name: `Creation of ${name}`,
         date: creation,
         description: `Creation of ${name}`,
+        placeId: newPlace.id,
       });
     }
 
-     // Create destruction event
-     if (isDestroyed && dateOfDestruction) {
+    // Create destruction event
+    if (isDestroyed && dateOfDestruction) {
       addEvent({
         id: eventIdBase + 2,
         name: `Destruction of ${name}`,
         date: dateOfDestruction,
         description: `Destruction of ${name}`,
+        placeId: newPlace.id,
       });
     }
+
     navigate('/placesList');
   };
 
   return (
     <div>
+      <h1>Create Place</h1>
       <div>
-        Place's Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        <label>Name:</label>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
       </div>
       <div>
-        Place's Age: <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />
+        <label>Age:</label>
+        <input type="number" value={age} onChange={(e) => setAge(e.target.value)} placeholder="Age" required />
       </div>
       <div>
-        Place's picture: <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />
+        <label>Photo:</label>
+        <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />
       </div>
       <div>
-        Place's Description: <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+        <label>Description:</label>
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
       </div>
       <div>
-        Creation Date: <input type="date" value={creation} onChange={(e) => setCreation(e.target.value)} />
+        <label>Creation Date:</label>
+        <input type="date" value={creation} onChange={(e) => setCreation(e.target.value)} required />
       </div>
       <div>
-        <input type="checkbox" onChange={handleCheckboxChange} /> Destroyed
+        <label>
+          <input type="checkbox" checked={isDestroyed} onChange={handleCheckboxChange} />
+          Is Destroyed
+        </label>
       </div>
       {isDestroyed && (
         <div>
-          Destruction Date: <input type="date" value={dateOfDestruction} onChange={(e) => setDateOfDestruction(e.target.value)} />
+          <label>Destruction Date:</label>
+          <input type="date" value={dateOfDestruction} onChange={(e) => setDateOfDestruction(e.target.value)} required />
         </div>
       )}
       <div>
-        <input type="checkbox" onChange={handleRulerCheckboxChange} /> Is this place ruled by someone?
+        <label>
+          <input type="checkbox" checked={isRuled} onChange={handleRulerCheckboxChange} />
+          Is Ruled
+        </label>
       </div>
       {isRuled && (
         <div>
-          Ruler: 
-          <select value={ruler} onChange={(e) => setRuler(e.target.value)}>
-            <option value="">Select a character</option>
+          <label>Ruler:</label>
+          <select value={ruler} onChange={(e) => setRuler(e.target.value)} required>
             {characters.map(character => (
-              <option key={character.id} value={character.name}>{character.name}</option>
+              <option key={character.id} value={character.name}>
+                {character.name}
+              </option>
             ))}
           </select>
         </div>

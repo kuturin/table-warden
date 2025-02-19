@@ -75,10 +75,10 @@ function App() {
           <Route path="/placesCreate" element={<PlaceCreation addPlace={addPlace} addEvent={addEvent} characters={characters} />} /> 
           <Route path="/placesEdit/:id" element={<PlaceEdit places={places} updatePlace={updatePlace} characters={characters} />} />
           <Route path="/placesView/:id" element={<PlaceView places={places} />} />
-          <Route path="/eventsCreate" element={<EventCreation addEvent={addEvent} />} />
-          <Route path="/eventsList" element={<EventList events={events} removeEvent={removeEvent} />} />
-          <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} />} />
-          <Route path="/eventsView/:id" element={<EventView events={events} />} />
+          <Route path="/eventsCreate" element={<EventCreation addEvent={addEvent} characters={characters} places={places} />} />
+          <Route path="/eventsList" element={<EventList events={events} removeEvent={removeEvent}  />} />
+          <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} characters={characters} places={places} />} />
+          <Route path="/eventsView/:id" element={<EventView events={events} characters={characters} places={places} />} />
         </Routes>
       </div>
     </Router>
