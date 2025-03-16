@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Menu from './Menu';
@@ -43,9 +43,20 @@ function App() {
     setPlaces(places.filter(place => place.id !== id));
   };
 
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:5000/')
+      .then(response => response.text())
+      .then(data => setMessage(data));
+  }, []);
+
+
   return (
     <Router>
       <div>
+        <h1>Message from Backend:</h1>
+        <p>{message}</p>
         <ConditionalMenu />
         <Routes>
           <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} />} />
