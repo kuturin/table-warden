@@ -12,6 +12,9 @@ const Menu = () => {
       <div>
           <button onClick={() => navigate('/placesList')}>Go to places</button>
       </div>
+      <div>
+          <button onClick={() => navigate('/itemsList')}>Go to items</button>
+      </div>
       
     </nav>
   );

@@ -10,10 +10,16 @@ import PlaceList from './Place/PlaceList';
 import PlaceCreation from './Place/PlaceCreation';
 import PlaceEdit from './Place/PlaceEdit';
 import PlaceView from './Place/PlaceView';
+import ItemCreation from './Item/ItemCreation';
+import ItemEdit from './Item/ItemEdit';
+import ItemList from './Item/ItemList';
+import ItemView from './Item/ItemView';
 
 function App() {
   const [characters, setCharacters] = useState([]);
   const [places, setPlaces] = useState([]);
+  const [items, setItems] = useState([]);
+
 
   const addCharacter = (character) => {
     setCharacters([...characters, character]);
@@ -42,6 +48,20 @@ function App() {
   const removePlace = (id) => {
     setPlaces(places.filter(place => place.id !== id));
   };
+  
+  const addItem = (item) => {
+    setItems([...items, item]);
+  };
+
+  const updateItem = (updatedItem) => {
+    setItems(items.map(item => 
+      item.id === updatedItem.id ? updatedItem : item
+    ));
+  };
+
+  const removeItem = (id) => {
+    setItems(items.filter(item => item.id !== id));
+  };
 
   return (
     <Router>
@@ -56,6 +76,11 @@ function App() {
           <Route path="/placesCreate" element={<PlaceCreation addPlace={addPlace} characters={characters} />} />
           <Route path="/placesEdit/:id" element={<PlaceEdit places={places} updatePlace={updatePlace} characters={characters} />} />
           <Route path="/placesView/:id" element={<PlaceView places={places} />} />
+          <Route path="/itemsCreate" element={<ItemCreation addItem={addItem} />} />
+          <Route path="/itemsList" element={<ItemList items={items} removeItem={removeItem} />} />
+          <Route path="/itemsEdit/:id" element={<ItemEdit items={items} updateItem={updateItem} />} />
+          <Route path="/itemsView/:id" element={<ItemView items={items} />} />
+        
         </Routes>
       </div>
     </Router>
@@ -64,7 +89,7 @@ function App() {
 
 function ConditionalMenu() {
   const location = useLocation();
-  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list'];
+  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/itemsCreate', '/itemsList', '/itemsEdit', '/itemsView'];
   const shouldHideMenu = hideMenuPaths.some(path => location.pathname.startsWith(path));
   console.log(`Current path: ${location.pathname}, shouldHideMenu: ${shouldHideMenu}`);
   return !shouldHideMenu ? <Menu /> : null;
