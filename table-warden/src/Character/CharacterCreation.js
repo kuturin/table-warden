@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const CharacterCreation = ({ addCharacter }) => {
+const CharacterCreation = ({ addCharacter, addEvent }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('PC');
   const [age, setAge] = useState('');
@@ -30,6 +30,31 @@ const CharacterCreation = ({ addCharacter }) => {
       category,
     };
     addCharacter(newCharacter);
+
+    const eventIdBase = Date.now();
+
+    // Create birthday event
+    if (birthday) {
+      addEvent({
+        id: eventIdBase + 1,
+        name: `Birthday of ${name}`,
+        date: birthday,
+        description: `Birthday of ${name}`,
+        characterId: newCharacter.id,
+      });
+    }
+
+    // Create death event
+    if (isDead && dateOfDeath) {
+      addEvent({
+        id: eventIdBase + 2,
+        name: `Death of ${name}`,
+        date: dateOfDeath,
+        description: `Death of ${name}`,
+        characterId: newCharacter.id,
+      });
+    }
+
     navigate('/list');
   };
 
@@ -39,7 +64,7 @@ const CharacterCreation = ({ addCharacter }) => {
         Character's Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div>
-      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="PC">PC</option>
           <option value="NPC">NPC</option>
           <option value="Creature">Creature</option>
@@ -71,7 +96,6 @@ const CharacterCreation = ({ addCharacter }) => {
       <div>
         <button onClick={() => navigate('/list')}>Cancel</button>
       </div>
-      
     </div>
   );
 };
