@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const CharacterCreation = ({ addCharacter, addEvent }) => {
+const CharacterCreation = ({ addCharacter, addEvent, groups }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('PC');
   const [age, setAge] = useState('');
@@ -11,6 +11,7 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
   const [birthday, setBirthday] = useState('');
   const [isDead, setIsDead] = useState(false);
   const [dateOfDeath, setDateOfDeath] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState(''); // Dodano pole dla grupy
   const navigate = useNavigate();
 
   const handleCheckboxChange = (event) => {
@@ -28,6 +29,7 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
       isDead,
       dateOfDeath,
       category,
+      groupId: selectedGroup || null, // Przypisanie grupy
     };
     addCharacter(newCharacter);
 
@@ -90,6 +92,17 @@ const CharacterCreation = ({ addCharacter, addEvent }) => {
           Date of Death: <input type="date" value={dateOfDeath} onChange={(e) => setDateOfDeath(e.target.value)} />
         </div>
       )}
+      <div>
+        <label>Assign to Group:</label>
+        <select value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
+          <option value="">None</option>
+          {groups.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <div>
         <button onClick={handleSave}>Save</button>
       </div>

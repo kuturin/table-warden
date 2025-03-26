@@ -61,6 +61,9 @@ const CharacterList = ({ characters, removeCharacter }) => {
         <button onClick={() => navigate('/create')}>Create Character</button>
       </div>
       <div>
+        <button onClick={() => navigate('/groupsList')}>View Groups</button> {/* Dodano przycisk do przejścia do GroupList */}
+      </div>
+      <div>
         <button onClick={() => navigate('/')}>Back to Home</button>
       </div>
     </div>

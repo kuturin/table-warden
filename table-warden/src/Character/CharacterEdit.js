@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../App.css';
 
-const CharacterEdit = ({ characters, updateCharacter }) => {
+const CharacterEdit = ({ characters, updateCharacter, groups }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const character = characters.find(character => character.id === parseInt(id));
+  const character = characters.find((character) => character.id === parseInt(id));
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('PC');
@@ -15,6 +14,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
   const [birthday, setBirthday] = useState('');
   const [isDead, setIsDead] = useState(false);
   const [dateOfDeath, setDateOfDeath] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState(''); // Dodano pole dla grupy
 
   useEffect(() => {
     if (character) {
@@ -26,6 +26,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
       setBirthday(character.birthday);
       setIsDead(character.isDead);
       setDateOfDeath(character.dateOfDeath);
+      setSelectedGroup(character.groupId || ''); // Ustawienie grupy
     }
   }, [character]);
 
@@ -35,7 +36,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
 
   const handleSave = () => {
     const updatedCharacter = {
-      id: character.id,
+      ...character,
       name,
       category,
       age,
@@ -44,6 +45,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
       birthday,
       isDead,
       dateOfDeath,
+      groupId: selectedGroup || null, // Przypisanie grupy
     };
     updateCharacter(updatedCharacter);
     navigate('/list');
@@ -51,6 +53,7 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
 
   return (
     <div>
+      <h1>Edit Character</h1>
       <div>
         Character's Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
@@ -82,7 +85,21 @@ const CharacterEdit = ({ characters, updateCharacter }) => {
         </div>
       )}
       <div>
+        <label>Assign to Group:</label>
+        <select value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
+          <option value="">None</option>
+          {groups.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
         <button onClick={handleSave}>Save</button>
+      </div>
+      <div>
+        <button onClick={() => navigate('/list')}>Cancel</button>
       </div>
     </div>
   );

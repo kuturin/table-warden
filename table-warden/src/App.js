@@ -15,12 +15,17 @@ import EventCreation from './Event/EventCreation';
 import EventEdit from './Event/EventEdit';
 import EventView from './Event/EventView';
 import Timeline from './Event/timeline/timeline';
+import GroupCreation from './Character/Group/GroupCreation';
+import GroupEdit from './Character/Group/GroupEdit';
+import GroupList from './Character/Group/GroupList';
+import GroupView from './Character/Group/GroupView';
 
 
 function App() {
   const [characters, setCharacters] = useState([]);
   const [places, setPlaces] = useState([]);
   const [events, setEvents] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   const addCharacter = (character) => {
     setCharacters([...characters, character]);
@@ -64,15 +69,27 @@ function App() {
     setEvents(events.filter(event => event.id !== id));
   };
 
+  const addGroup = (group) => {
+    setGroups([...groups, group]);
+  };
+
+  const updateGroup = (updatedGroup) => {
+    setGroups(groups.map((group) => (group.id === updatedGroup.id ? updatedGroup : group)));
+  };
+
+  const removeGroup = (id) => {
+    setGroups(groups.filter((group) => group.id !== id));
+  };
+
   return (
     <Router>
       <div>
         <ConditionalMenu />
         <Routes>
-        <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} addEvent={addEvent} />} /> 
+        <Route path="/create" element={<CharacterCreation addCharacter={addCharacter} addEvent={addEvent} groups={groups} />} /> 
           <Route path="/list" element={<CharacterList characters={characters} removeCharacter={removeCharacter} />} />
-          <Route path="/edit/:id" element={<CharacterEdit characters={characters} updateCharacter={updateCharacter} />} />
-          <Route path="/view/:id" element={<CharacterView characters={characters} />} />
+          <Route path="/edit/:id" element={<CharacterEdit characters={characters} updateCharacter={updateCharacter} groups={groups} />} />
+          <Route path="/view/:id" element={<CharacterView characters={characters} groups={groups} />} />
           <Route path="/placesList" element={<PlaceList places={places} removePlace={removePlace} />} />
           <Route path="/placesCreate" element={<PlaceCreation addPlace={addPlace} addEvent={addEvent} characters={characters} />} /> 
           <Route path="/placesEdit/:id" element={<PlaceEdit places={places} updatePlace={updatePlace} characters={characters} />} />
@@ -82,6 +99,11 @@ function App() {
           <Route path="/eventsEdit/:id" element={<EventEdit events={events} updateEvent={updateEvent} characters={characters} places={places} />} />
           <Route path="/eventsView/:id" element={<EventView events={events} characters={characters} places={places} />} />
           <Route path="/timeline" element={<Timeline events={events} />} />
+          <Route path="/groupsCreate" element={<GroupCreation addGroup={addGroup} characters={characters} />} />
+          <Route path="/groupsList" element={<GroupList groups={groups} removeGroup={removeGroup} />} />
+          <Route path="/groupsEdit/:id" element={<GroupEdit groups={groups} updateGroup={updateGroup} characters={characters} />} />
+          <Route path="/groupsView/:id" element={<GroupView groups={groups} characters={characters} />} />
+      
         </Routes>
       </div>
     </Router>
@@ -90,7 +112,7 @@ function App() {
 
 function ConditionalMenu() {
   const location = useLocation();
-  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/eventsList', '/eventsCreate', '/eventsEdit', '/eventsView', '/timeline'];
+  const hideMenuPaths = ['/edit', '/view', '/placesList', '/placesCreate', '/placesEdit', '/placesView', '/create', '/list', '/eventsList', '/eventsCreate', '/eventsEdit', '/eventsView', '/timeline', '/groupsCreate', '/groupsList', '/groupsEdit', '/groupsView'];
   const shouldHideMenu = hideMenuPaths.some(path => location.pathname.startsWith(path));
   console.log(`Current path: ${location.pathname}, shouldHideMenu: ${shouldHideMenu}`);
   return !shouldHideMenu ? <Menu /> : null;
